@@ -1,6 +1,6 @@
-from fastapi import FastAPI, APIRouter, Depends, HTTPException
+from fastapi import FastAPI, APIRouter, Depends, HTTPException, Response
 from database import get_db, Session
-from schemas import JobResponse, JobCreate
+from schemas import JobResponse, JobCreate, JobUpdate
 from models import JobApp
 from typing import List
 
@@ -28,9 +28,13 @@ def get_job(company_name: str, db: Session = Depends(get_db)):
 
 #Endpoint for getting job apps by status of application
 
-@router.get("/status={applied}")
-def get_job_by_status(applied: bool, db: Session = Depends(get_db)):
-    return
+@router.get("/{applied}", response_model = List[JobResponse])
+def get_job_by_status(applied: str, db: Session = Depends(get_db)):
+    jobs = db.query(JobApp).filter(JobApp.status == applied).all()
+    if not jobs:
+        raise HTTPException(status_code= 404, detail= f"No Job applications are of the status {applied}")
+
+    return jobs
 
 #Endpoint for creating a new job application
 
@@ -47,12 +51,34 @@ def add_job(job: JobCreate, db: Session = Depends(get_db)):
 
 #Endpoint for updating existing job application
     
-@router.put("/{id}", response_model = JobResponse)
-def update_job(id: int, db: Session = Depends(get_db)):
-    return
+@router.patch("/{id}", response_model = JobResponse)
+def update_job(id: int, job_update: JobUpdate, db: Session = Depends(get_db)):
+    job = db.query(JobApp).filter(JobApp.id == id).first()
+
+    if not job:
+        raise HTTPException(status_code=404, detail="Job Application to update not found!")
+    
+    update_data = job_update.dict(exclude_unset=True)
+
+    for field, val in update_data.items():
+        setattr(job, field, val)
+
+    db.commit()
+    db.refresh(job)
+    return job
+
 
 #Endpoint for deleting a job application
 
-@router.delete("/delete/{id}")
-def delete_job(id: int):
-    return
+@router.delete("/{id}", response_model = JobResponse)
+def delete_job(id: int, db: Session = Depends(get_db)):
+    job = db.query(JobApp).filter(JobApp.id == id).first()
+
+    if not job:
+        raise HTTPException(status_code=404, detail="Job Application not found!")
+
+    db.delete(job)
+    db.commit()
+    
+    return Response(status_code=204)
+    

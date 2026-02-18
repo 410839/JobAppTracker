@@ -23,3 +23,9 @@ class JobResponse(BaseModel):
     class Config:
         from_attributes = True
         orm_mode = True
+
+#Schema for a Job application update
+
+class JobUpdate(BaseModel):
+    status: str
+    
