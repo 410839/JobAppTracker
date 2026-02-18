@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from database import engine, Base
-from sqlalchemy import MetaData
+#from sqlalchemy import MetaData
 from contextlib import asynccontextmanager
 import time
+
+# Lifespan function to define behavior on app startup and shutdown load in the 
 
 shared_resources = {}
 
@@ -10,7 +12,11 @@ shared_resources = {}
 async def lifespan(app: FastAPI):
 
     print("App Starting")
+
+    #Start engine
     Base.metadata.create_all(engine)
+
+    #Keep track of times 
     shared_resources['start_time'] = time.time()
     
     print("Resources initialized")
@@ -25,7 +31,7 @@ async def lifespan(app: FastAPI):
 
     print(f"Application ran for {uptime:.2f} seconds. Cleaning up resources") 
 
-
+#Create the fastapi app
 
 app = FastAPI(
     title = "Connor Owens Job Tracker",
@@ -34,9 +40,13 @@ app = FastAPI(
     lifespan = lifespan
 )
 
+#Include the jobs router 
+
 from routes.jobs import router as jobs_router
 
 app.include_router(jobs_router, prefix="/jobs", tags=['Jobs'])
+
+#Health check of the app
 
 @app.get("/health")
 def health_check():

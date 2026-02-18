@@ -1,6 +1,8 @@
 from pydantic import BaseModel
-from models import JobApp
+#from models import JobApp
 from datetime import datetime
+
+#Schema for what a job create object needs
 
 class JobCreate(BaseModel):
     date: datetime
@@ -8,6 +10,8 @@ class JobCreate(BaseModel):
     company_name: str
     link_to_job_app: str
     status: str
+
+#Schema for what should be returned by the endpoint responses
 
 class JobResponse(BaseModel):
     id: int

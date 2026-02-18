@@ -1,9 +1,8 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, DateTime, Boolean
+from sqlalchemy import String, DateTime
 from database import engine, Base
 
-
-
+# Model for what a job application looks like in the db
 
 class JobApp(Base):
     __tablename__ = "jobs"
