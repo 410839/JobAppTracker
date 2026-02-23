@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './styles/App.css';
+import getJobs from './services/jobService';
 
 function App() {
   return (
