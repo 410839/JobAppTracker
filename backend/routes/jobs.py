@@ -9,32 +9,48 @@ router = APIRouter()
 #Endpoint for getting all job apps
 
 @router.get("/", response_model = List[JobResponse])
-def get_jobs(db: Session = Depends(get_db)):
-    jobs = db.query(JobApp).all()
+def get_jobs(db: Session = Depends(get_db), company_name: str = None, status: str = None, id = None):
+    query = db.query(JobApp)
+    if company_name:
+        query = query.filter(JobApp.company_name == company_name)
+    if status:
+        query = query.filter(JobApp.status == status)
+    if id:
+        query = query.filter(JobApp.id == id)
+    jobs = query.all()
+
     if not jobs:
-        raise HTTPException(status_code= 404, detail = "No Job Applications")
+        raise HTTPException(status_code= 404, detail = f"No Job Applications match {company_name} {status} {id}")
     
     return jobs
+
+# @router.get("/", response_model = List[JobResponse])
+# def get_jobs(db: Session = Depends(get_db)):
+#     jobs = db.query(JobApp).all()
+#     if not jobs:
+#         raise HTTPException(status_code= 404, detail = "No Job Applications")
     
-#Endpoint for getting job apps by company name
-
-@router.get("/{company_name}", response_model = List[JobResponse])
-def get_job(company_name: str, db: Session = Depends(get_db)):
-    jobs = db.query(JobApp).filter(JobApp.company_name == company_name).all()
-    if not jobs:
-        raise HTTPException(status_code = 404, detail = "Job Application not found!")
+#     return jobs
     
-    return jobs
+# #Endpoint for getting job apps by company name
 
-#Endpoint for getting job apps by status of application
+# @router.get("/{company_name}", response_model = List[JobResponse])
+# def get_job(company_name: str, db: Session = Depends(get_db)):
+#     jobs = db.query(JobApp).filter(JobApp.company_name == company_name).all()
+#     if not jobs:
+#         raise HTTPException(status_code = 404, detail = "Job Application not found!")
+    
+#     return jobs
 
-@router.get("/{applied}", response_model = List[JobResponse])
-def get_job_by_status(applied: str, db: Session = Depends(get_db)):
-    jobs = db.query(JobApp).filter(JobApp.status == applied).all()
-    if not jobs:
-        raise HTTPException(status_code= 404, detail= f"No Job applications are of the status {applied}")
+# #Endpoint for getting job apps by status of application
 
-    return jobs
+# @router.get("/{applied}", response_model = List[JobResponse])
+# def get_job_by_status(applied: str, db: Session = Depends(get_db)):
+#     jobs = db.query(JobApp).filter(JobApp.status == applied).all()
+#     if not jobs:
+#         raise HTTPException(status_code= 404, detail= f"No Job applications are of the status {applied}")
+
+#     return jobs
 
 #Endpoint for creating a new job application
 
@@ -66,7 +82,6 @@ def update_job(id: int, job_update: JobUpdate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(job)
     return job
-
 
 #Endpoint for deleting a job application
 
