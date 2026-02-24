@@ -6,7 +6,7 @@ const header_details = {'Content-Type': 'application/json; charset=UTF-8'};
 
 async function perform_request(url, method_type, body_details=null) {
     try {
-        let request_details = {method: method_type}
+        let request_details = {method: method_type};
         if (body_details != null) {
             request_details.body = JSON.stringify(body_details);
             request_details.headers = header_details;
@@ -21,12 +21,12 @@ async function perform_request(url, method_type, body_details=null) {
 
     } catch (error) {
         console.error('Fetch Error:', error);
+        throw error;
     }
 }
 
 async function getJobs(page = null, status = null) {
     let full_url = `${API_BASE}/jobs`;
-    console.log(full_url)
     const data = await perform_request(full_url, "GET");
     return data;
 }

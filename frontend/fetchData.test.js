@@ -48,3 +48,12 @@ test('Delete job app works correctly', async () => {
     expect(fetch).toHaveBeenCalledWith(`${API_BASE}/jobs/1`, {method: "DELETE"});
 
 });
+
+test('Get jobs error gives correct httpexception', async () => {
+    
+    fetch.mockResponseOnce(JSON.stringify({}), {status: 500, ok: false});
+
+    await expect(getJobs()).rejects.toThrow('HTTP error status: 500');
+
+    expect(fetch).toHaveBeenCalledWith(`${API_BASE}/jobs`, { method: "GET" });
+});
