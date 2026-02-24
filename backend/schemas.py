@@ -15,6 +15,7 @@ class JobCreate(BaseModel):
 
 class JobResponse(BaseModel):
     id: int
+    date: datetime
     job_title: str
     company_name: str
     link_to_job_app: str

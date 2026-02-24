@@ -1,13 +1,14 @@
-const { beforeEach } = require('node:test');
 const { getJobs, createJob, deleteJob, patchJob } = require('./src/services/jobService');
 
-let fetchMock;
-const MOCK_DATA = {name: 'Test'};
-
 beforeEach(() => {
-    fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(MOCK_DATA),
+    fetch.resetMocks();
+});
 
-    }))
+test('Get jobs returns data when fetch is successful', async () => {
+    const mockJobs = [{id: 1, company_name: "Software Company", job_title: "Software developer", link_to_job_app: "www.youtube.com", status: "interviewing"}];
+    fetch.mockResponseOnce(JSON.stringify(mockJobs));
+
+    const data = await getJobs();
+    expect(data).toEqual(mockJobs);
+    expect(fetch).toHaveBeenCalledWith('http://localhost:8000/jobs', {method: "GET"})
 })

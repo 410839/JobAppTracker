@@ -24,32 +24,29 @@ async function perform_request(url, method_type, body_details=null) {
     }
 }
 
-export async function getJobs(page = null, status = null) {
+async function getJobs(page = null, status = null) {
     let full_url = `${API_BASE}/jobs`;
-    if (page != null) {
-        
-    }
-
-    
+    console.log(full_url)
     const data = await perform_request(full_url, "GET");
     return data;
 }
 
-export async function createJob(jobData) {
+async function createJob(jobData) {
     const full_url = `${API_BASE}/jobs`;
     const data = await perform_request(full_url, "POST", jobData);
     return data;
 }
 
-export async function deleteJob(id) {
+async function deleteJob(id) {
     const full_url = `${API_BASE}/jobs/${id}`;
     const data = await perform_request(full_url, "DELETE");
     return data;
 }
 
-export async function patchJob(id, jobData) {
+async function patchJob(id, jobData) {
     const full_url = `${API_BASE}/jobs/${id}`;
     const data = await perform_request(full_url, "PATCH", jobData);
     return data;
 }
 
+module.exports = {getJobs, createJob, deleteJob, patchJob};

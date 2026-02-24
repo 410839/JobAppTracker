@@ -1,1 +1,5 @@
-require('jest-fetch-mock').enableFetchMocks();
+require('dotenv').config({ path: '.env.test' });
+
+const fetchMock = require('jest-fetch-mock');
+
+fetchMock.enableMocks();
