@@ -4,6 +4,7 @@ from schemas import JobResponse, JobCreate, JobUpdate
 from models import JobApp
 from typing import List
 
+
 router = APIRouter()
 
 #Endpoint for getting all job apps

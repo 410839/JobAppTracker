@@ -3,6 +3,13 @@ from database import engine, Base
 #from sqlalchemy import MetaData
 from contextlib import asynccontextmanager
 import time
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost:3000"
+]
+
+
 
 # Lifespan function to define behavior on app startup and shutdown load in the 
 
@@ -38,6 +45,13 @@ app = FastAPI(
     description = "App to help me practice fastapi along with react in order to gain understanding and develop a tool to help me with job applications",
     version = "1.0.0",
     lifespan = lifespan
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 #Include the jobs router 
