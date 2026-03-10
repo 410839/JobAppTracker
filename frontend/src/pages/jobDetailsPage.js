@@ -3,6 +3,7 @@ import { getJobs } from "../services/jobService.js";
 import Navbar from "../components/navBarComponent.js";
 import Header from "../components/headerComponent.js"
 import JobAppCard from "../components/jobAppDisplay.js";
+import Filters from '../components/filterBar.js';
 
 
 export default function GetJobDetails() {
@@ -30,9 +31,9 @@ export default function GetJobDetails() {
         <div>
             <Header/>
             <Navbar />
+            <Filters filters={jobAppFilters} setJobAppFilters = {setJobAppFilters}/>
             <ul>
                 {jobApps.map((jobApp) => (
-                    // <li key = {jobApp.id}> {jobApp.company_name} </li>
                     <JobAppCard jobInfo = {jobApp}/>
                 ))}
             </ul>
