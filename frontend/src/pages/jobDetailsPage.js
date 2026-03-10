@@ -16,7 +16,7 @@ export default function GetJobDetails() {
 
     useEffect(() => {
         async function fetchJobs() {
-            const data = await getJobs();
+            const data = await getJobs(jobAppFilters);
             setJobApps(data);
             setLoading(false);
         }
