@@ -10,10 +10,12 @@ router = APIRouter()
 #Endpoint for getting all job apps
 
 @router.get("/", response_model = List[JobResponse])
-def get_jobs(db: Session = Depends(get_db), company_name: str = None, status: str = None, id = None):
+def get_jobs(db: Session = Depends(get_db), job_title: str = None, company_name: str = None, status: str = None, id = None):
     query = db.query(JobApp)
+    if job_title:
+        query = query.filter(JobApp.job_title.ilike(f"%{job_title}%"))
     if company_name:
-        query = query.filter(JobApp.company_name == company_name)
+        query = query.filter(JobApp.company_name.ilike(f"%{company_name}%"))
     if status:
         query = query.filter(JobApp.status == status)
     if id:

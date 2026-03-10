@@ -1,6 +1,7 @@
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
+
 const header_details = {'Content-Type': 'application/json; charset=UTF-8'};
 
 async function perform_request(url, method_type, body_details=null) {
@@ -24,8 +25,9 @@ async function perform_request(url, method_type, body_details=null) {
     }
 }
 
-export async function getJobs(page = null, status = null) {
-    let full_url = `${API_BASE}/jobs/`;
+export async function getJobs(filters = {}) {
+    const params = new URLSearchParams(filters);
+    let full_url = `${API_BASE}/jobs/?${params.toString()}`;
     const data = await perform_request(full_url, "GET");
     return data;
 }

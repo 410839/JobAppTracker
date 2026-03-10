@@ -11,14 +11,16 @@ export default function GetJobDetails() {
 
     const [jobApps, setJobApps] = useState([]);
 
+    const [jobAppFilters, setJobAppFilters] = useState({status: null, company_name: null, job_title: null});
+
     useEffect(() => {
         async function fetchJobs() {
-            const data = await getJobs()
+            const data = await getJobs();
             setJobApps(data);
             setLoading(false);
         }
         fetchJobs();
-    }, []);
+    }, [jobAppFilters]);
 
 
 
