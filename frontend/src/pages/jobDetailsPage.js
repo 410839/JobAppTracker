@@ -12,11 +12,18 @@ export default function GetJobDetails() {
 
     const [jobApps, setJobApps] = useState([]);
 
-    const [jobAppFilters, setJobAppFilters] = useState({status: null, company_name: null, job_title: null});
+    const defaultJobAppFilters = {status: "", company_name: "", job_title: ""};
+
+    const [jobAppFilters, setJobAppFilters] = useState(defaultJobAppFilters);
+
+    const [draftJobAppFilters, setDraftJobAppFilters] = useState(defaultJobAppFilters);
 
     useEffect(() => {
         async function fetchJobs() {
+            
             const data = await getJobs(jobAppFilters);
+
+           
             setJobApps(data);
             setLoading(false);
         }
@@ -31,7 +38,7 @@ export default function GetJobDetails() {
         <div>
             <Header/>
             <Navbar />
-            <Filters filters={jobAppFilters} setJobAppFilters = {setJobAppFilters}/>
+            <Filters draftFilters = {draftJobAppFilters} setDraftJobAppFilters = {setDraftJobAppFilters} setJobAppFilters = {setJobAppFilters} defaultFilters = {defaultJobAppFilters}/>
             <ul>
                 {jobApps.map((jobApp) => (
                     <JobAppCard jobInfo = {jobApp}/>

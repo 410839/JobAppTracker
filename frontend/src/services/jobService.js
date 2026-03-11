@@ -6,7 +6,9 @@ const header_details = {'Content-Type': 'application/json; charset=UTF-8'};
 
 async function perform_request(url, method_type, body_details=null) {
     try {
+        
         let request_details = {method: method_type};
+        console.log(request_details);
         if (body_details != null) {
             request_details.body = JSON.stringify(body_details);
             request_details.headers = header_details;
@@ -26,7 +28,10 @@ async function perform_request(url, method_type, body_details=null) {
 }
 
 export async function getJobs(filters = {}) {
-    const params = new URLSearchParams(filters);
+    const activeFilters = Object.fromEntries(
+        Object.entries(filters).filter(([key, value]) => value !== "")
+    );
+    const params = new URLSearchParams(activeFilters);
     let full_url = `${API_BASE}/jobs/?${params.toString()}`;
     const data = await perform_request(full_url, "GET");
     return data;
