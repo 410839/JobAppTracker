@@ -4,6 +4,7 @@ import Navbar from "../components/navBarComponent.js";
 import Header from "../components/headerComponent.js"
 import JobAppCard from "../components/jobAppDisplay.js";
 import Filters from '../components/filterBar.js';
+import ActiveFilters from "../components/activeFilterDisplay.js";
 
 
 export default function GetJobDetails() {
@@ -18,6 +19,8 @@ export default function GetJobDetails() {
 
     const [draftJobAppFilters, setDraftJobAppFilters] = useState(defaultJobAppFilters);
 
+    const [appliedJobAppFilters, setAppliedJobAppFilters] = useState([]);
+
     useEffect(() => {
         async function fetchJobs() {
             
@@ -26,7 +29,9 @@ export default function GetJobDetails() {
            
             setJobApps(data);
             setLoading(false);
+            
         }
+        setAppliedJobAppFilters(Object.entries(jobAppFilters).filter(([key, v]) => v !== ""));
         fetchJobs();
     }, [jobAppFilters]);
 
@@ -39,6 +44,10 @@ export default function GetJobDetails() {
             <Header/>
             <Navbar />
             <Filters draftFilters = {draftJobAppFilters} setDraftJobAppFilters = {setDraftJobAppFilters} setJobAppFilters = {setJobAppFilters} defaultFilters = {defaultJobAppFilters}/>
+            {appliedJobAppFilters.map(([key, jobFilter]) => (
+                
+                <ActiveFilters filterType = {key} filter = {jobFilter} />
+            ))}
             <ul>
                 {jobApps.map((jobApp) => (
                     <JobAppCard jobInfo = {jobApp}/>

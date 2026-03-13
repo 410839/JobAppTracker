@@ -2,7 +2,7 @@ import {useSearchParams} from "react-router-dom";
 
 
 
-export default function Filters({ draftFilters, setDraftJobAppFilters, setJobAppFilters, defaultFilters}) {
+export default function Filters({ draftFilters, setDraftJobAppFilters, setJobAppFilters, defaultFilters }) {
     const [searchParams, setSearchParams] = useSearchParams();
 
     function handleJobTitleChange(e) {
@@ -22,6 +22,7 @@ export default function Filters({ draftFilters, setDraftJobAppFilters, setJobApp
     function handleClearFilters() {
         setDraftJobAppFilters(defaultFilters);
         setJobAppFilters(defaultFilters);
+        setSearchParams({});
     }
 
     function handleApplyFilters(e) { 
@@ -56,7 +57,7 @@ export default function Filters({ draftFilters, setDraftJobAppFilters, setJobApp
             <button type="button" onClick = {handleClearFilters}>Clear Filters</button>
             <input type = "submit" value= "Apply Filters"></input>
             </form>
-            
+        
 
         </div>
     );
