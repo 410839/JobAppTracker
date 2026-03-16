@@ -15,7 +15,10 @@ async function perform_request(url, method_type, body_details=null) {
         }
         const response = await fetch(url, request_details);
         if (!response.ok) {
-            throw new Error(`HTTP error status: ${response.status}`);
+            if (response.status === 404) {
+                return [];
+            }
+            throw new Error(`Server Error`);
         }
         const data = await response.json();
         console.log(data);
