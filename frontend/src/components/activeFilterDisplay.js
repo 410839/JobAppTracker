@@ -12,8 +12,11 @@ export default function ActiveFilters({ filterType, filter}){
 
     
     return (
-            
-        <button> {fullCleanFilterType}:{filter}</button>
+        <div>
+            <button> {fullCleanFilterType}:{filter}</button> 
+            <button>X</button>
+        </div>
+        
         
     );
 }

@@ -35,8 +35,6 @@ export default function GetJobDetails() {
         fetchJobs();
     }, [jobAppFilters]);
 
-
-
     if(loading) return <p>Loading Jobs ... </p>
 
     return (
