@@ -5,9 +5,12 @@ import Header from "../components/headerComponent.js"
 import JobAppCard from "../components/jobAppDisplay.js";
 import Filters from '../components/filterBar.js';
 import ActiveFilters from "../components/activeFilterDisplay.js";
+import {useSearchParams} from "react-router-dom";
 
 
 export default function GetJobDetails() {
+
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [loading, setLoading] = useState(true);
 
@@ -32,6 +35,12 @@ export default function GetJobDetails() {
             
         }
         setAppliedJobAppFilters(Object.entries(jobAppFilters).filter(([key, v]) => v !== ""));
+        
+        const activeFilters = Object.fromEntries(
+            Object.entries(jobAppFilters).filter(([_, v]) => v !== "")
+        );
+        // update URL
+        setSearchParams(activeFilters);
         fetchJobs();
     }, [jobAppFilters]);
 
@@ -44,7 +53,7 @@ export default function GetJobDetails() {
             <Filters draftFilters = {draftJobAppFilters} setDraftJobAppFilters = {setDraftJobAppFilters} setJobAppFilters = {setJobAppFilters} defaultFilters = {defaultJobAppFilters}/>
             {appliedJobAppFilters.map(([key, jobFilter]) => (
                 
-                <ActiveFilters filterType = {key} filter = {jobFilter} />
+                <ActiveFilters filterType = {key} filter = {jobFilter} appliedFilters = {appliedJobAppFilters} setJobAppFilters = {setJobAppFilters}/>
             ))}
             <ul>
                 {jobApps.map((jobApp) => (

@@ -1,9 +1,6 @@
-import {useSearchParams} from "react-router-dom";
-
 
 
 export default function Filters({ draftFilters, setDraftJobAppFilters, setJobAppFilters, defaultFilters }) {
-    const [searchParams, setSearchParams] = useSearchParams();
 
     function handleJobTitleChange(e) {
         setDraftJobAppFilters({
@@ -22,7 +19,6 @@ export default function Filters({ draftFilters, setDraftJobAppFilters, setJobApp
     function handleClearFilters() {
         setDraftJobAppFilters(defaultFilters);
         setJobAppFilters(defaultFilters);
-        setSearchParams({});
     }
 
     function handleApplyFilters(e) { 
@@ -30,12 +26,8 @@ export default function Filters({ draftFilters, setDraftJobAppFilters, setJobApp
         setJobAppFilters({
             ...draftFilters
         });
-        const activeFilters = Object.fromEntries(
-            Object.entries(draftFilters).filter(([_, v]) => v !== "")
-        );
+        
     
-        // update URL
-        setSearchParams(activeFilters);
     }
 
     return (
