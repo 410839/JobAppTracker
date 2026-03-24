@@ -34,11 +34,14 @@ export default function GetJobDetails() {
             setLoading(false);
             
         }
-        setAppliedJobAppFilters(Object.entries(jobAppFilters).filter(([key, v]) => v !== ""));
+        setAppliedJobAppFilters(jobAppFilters);
+
+        //Object.entries(jobAppFilters).filter(([key, v]) => v !== "")
         
         const activeFilters = Object.fromEntries(
             Object.entries(jobAppFilters).filter(([_, v]) => v !== "")
         );
+        console.log(activeFilters)
         // update URL
         setSearchParams(activeFilters);
         fetchJobs();
@@ -51,8 +54,7 @@ export default function GetJobDetails() {
             <Header/>
             <Navbar />
             <Filters draftFilters = {draftJobAppFilters} setDraftJobAppFilters = {setDraftJobAppFilters} setJobAppFilters = {setJobAppFilters} defaultFilters = {defaultJobAppFilters}/>
-            {appliedJobAppFilters.map(([key, jobFilter]) => (
-                
+            {Object.entries(appliedJobAppFilters).filter(([key, jobFilter]) => jobFilter !== "").map(([key, jobFilter]) => (
                 <ActiveFilters filterType = {key} filter = {jobFilter} appliedFilters = {appliedJobAppFilters} setJobAppFilters = {setJobAppFilters}/>
             ))}
             <ul>
